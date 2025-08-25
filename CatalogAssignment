@@ -1,0 +1,42 @@
+import java.util.*;
+
+public class LagrangeInterpolation {
+    // Efficient Lagrange interpolation
+    public static double interpolate(double[] x, double[] y, double targetX) {
+        int n = x.length;
+        double result = 0.0;
+
+        // Quick check for exact match
+        for (int i = 0; i < n; ++i) {
+            if (Math.abs(x[i] - targetX) < 1e-12) {
+                return y[i];
+            }
+        }
+
+        // Lagrange polynomial computation
+        for (int i = 0; i < n; ++i) {
+            double term = y[i];
+            for (int j = 0; j < n; ++j) {
+                if (i != j) {
+                    term *= (targetX - x[j]) / (x[i] - x[j]);
+                }
+            }
+            result += term;
+        }
+        return result;
+    }
+
+    public static void main(String[] args) {
+        // Example data points
+        double[] xPoints = {1, 2, 3, 4};
+        double[] yPoints = {2, 8, 18, 32};
+
+        double[] testX = {1.5, 2.5, 3.5};
+
+        System.out.println("Lagrange Interpolation Example:");
+        for (double tx : testX) {
+            double interpY = interpolate(xPoints, yPoints, tx);
+            System.out.printf("x = %.2f, y = %.4f%n", tx, interpY);
+        }
+    }
+}
